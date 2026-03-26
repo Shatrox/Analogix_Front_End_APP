@@ -1,0 +1,88 @@
+@font-face {
+    font-family: "cinzel";
+    src: url('../assets/fonts/CinzelDecorative-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.auth-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    background-image: url('../assets/backgroundHomePage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.auth-form {
+    background: white;
+    padding: 2rem;
+    border: 2px solid #F4A261;
+    border-radius: 8px;
+    background-color: #1d355765;
+    box-shadow: 0 2px 4px rgb(0, 0, 0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-form h2 {
+    text-align: center;
+    color: #1A1A1A;
+    font-family: 'cinzel';
+    text-shadow: 1px 1px 2px #F4A261;
+    margin-bottom: 1.5rem;
+}
+
+.auth-form p {
+    text-align: center;
+    margin: 4px;
+    color: #1A1A1A;
+    font-family: 'cinzel';
+    text-shadow: 1px 1px 2px #F4A261;
+    margin-bottom: 1.5rem;
+}
+
+.auth-form input {
+    margin: 4px;
+    padding: 0.8rem;
+    border: 2px solid #F4A261;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.auth-form button {
+    padding: 0.8rem;
+    margin: 4px;
+    background-color: #1D3557;
+    color: #1A1A1A;
+    font-family: 'cinzel';
+    text-shadow: 1px 1px 2px #F4A261;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.auth-form button:hover {
+    background-color: #F4A261;
+}
+
+.auth-form a {
+    color: #1A1A1A;
+    padding: 2px;
+    border-radius: 2px;
+    background-color: #1D3557;
+    font-family: 'cinzel';
+    text-shadow: 1px 1px 2px #F4A261;
+    text-decoration: none;
+    margin-top: 4px;
+
+}

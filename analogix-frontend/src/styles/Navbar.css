@@ -1,0 +1,49 @@
+@font-face {
+    font-family: "cinzel";
+    src: url('../assets/fonts/CinzelDecorative-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1D3557;
+    padding: 1rem 2rem;
+    color: white;
+}
+
+.navbar-title a {
+    color: #F4A261;
+    padding: 5px;
+    font-size: 1.5rem;
+    font-family: 'cinzel';
+    font-weight: bold;
+    text-decoration: none;
+    
+}
+
+.navbar-links-style {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links-style a {
+    color: #F4A261;
+    font-family: 'cinzel';
+    padding: 5px;
+    border: 2px solid #F4A261;
+    border-radius: 12px 8px 14px 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.navbar-links-style a:hover {
+    color: #FFD60A;
+}

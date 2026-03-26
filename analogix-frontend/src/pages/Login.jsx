@@ -1,0 +1,51 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import '../styles/Auth.css';
+
+const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+
+            const response = await api.post('/Authentication/Login', { email, password });
+
+            localStorage.setItem('token', response.data.token);
+            alert('Login successful!');
+            navigate('/');
+        }catch (error) {
+            console.error('Login failed:', error);
+            alert('Login failed. Please check your credentials and try again.');
+        }
+    };
+
+    return (
+        <div className="auth-container">
+            <form className="auth-form" onSubmit={handleLogin}>
+                <h2>Enter Analogix World</h2>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type = "password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+                <button type="submit">Login</button>
+                <p>Not part of this World yet? <Link to="/register">Register here</Link></p>
+            </form>
+        </div>
+    );
+};
+
+export default Login;
