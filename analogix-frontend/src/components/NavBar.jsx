@@ -25,7 +25,7 @@ const Navbar = () => {
             <ul className="navbar-links-style"> 
                 {isAuthenticated ? (
                 <>
-                <li><Link to="/profile">Profile</Link></li>
+                <li><Link to="/profilepage">Profile</Link></li>
                 <li><Link to="/my-events">My Events</Link></li>
                 <li><Link to="/my-subscriptions">My Subscriptions</Link></li>
                 <li><button onClick={handleLogout} className="logout-button">Logout</button></li>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api, { getPlayerProfile } from '../services/api';
 import '../styles/Auth.css';
 
 const Login = () => {
@@ -15,8 +15,16 @@ const Login = () => {
             const response = await api.post('/Authentication/Login', { email, password });
 
             localStorage.setItem('token', response.data.token);
-            alert('Login successful!');
-            navigate('/');
+            
+            const profileExists = await getPlayerProfile();
+
+            if (!profileExists) {
+                alert('Login successful!');
+                navigate('/createprofile');
+            } else {
+                alert('Login successful!');
+                navigate('/');
+            }
         }catch (error) {
             console.error('Login failed:', error);
             alert('Login failed. Please check your credentials and try again.');

@@ -19,4 +19,29 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+// checks if the player profile exists for the logged-in user, if not, it will return false and the user will be redirected to the CreateProfile page
+export const getPlayerProfile = async () => {
+    try {
+        const response = await api.get('/PlayerProfile/my-profile');
+        return true; // Profile exists
+    } catch (error) {
+        if (error?.response?.status === 404) {
+            return false; // Profile does not exist
+        }
+        throw error; 
+    }
+};
+
+//displays the player profile details on the Profile page
+export const getPlayerProfileDetails = async () => {
+    const response = await api.get('/PlayerProfile/my-profile');
+    return response.data; // Return profile details
+};
+
+// Updates the player profile with the provided data
+export const updatePlayerProfile = async (profileData) => {
+    const response = await api.put('/PlayerProfile/update/profile', profileData);
+    return response.data; // Return updated profile details
+};
+
 export default api;

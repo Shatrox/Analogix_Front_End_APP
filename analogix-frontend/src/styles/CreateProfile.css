@@ -1,0 +1,109 @@
+@font-face {
+    font-family: "cinzel";
+    src: url('../assets/fonts/CinzelDecorative-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.create-profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    background-image: url('../assets/backgroundHomePage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.create-profile-form {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 2rem;
+    border: 2px solid #F4A261;
+    border-radius: 8px;
+    background-color: #1d355765;
+    box-shadow: 0 2px 6px rgb(0, 0, 0);
+}
+
+.create-profile-form h2 {
+    text-align: center;
+    margin: 0 0 1rem 0;
+    color: #1A1A1A;
+    font-family: 'cinzel';
+    text-shadow: 1px 1px 2px #F4A261;
+}
+
+.create-profile-form textarea,
+.create-profile-form input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0.8rem;
+    border: 2px solid #F4A261;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #ffffffea;
+    color: #1A1A1A;
+    outline: none;
+}
+
+.create-profile-form textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+.create-profile-form textarea:focus,
+.create-profile-form input:focus {
+    border-color: #E76F51;
+    box-shadow: 0 0 0 2px rgba(244, 162, 97, 0.35);
+}
+
+.create-profile-form textarea::placeholder,
+.create-profile-form input::placeholder {
+    color: #33415c;
+    opacity: 0.85;
+}
+
+.create-profile-form button {
+    margin-top: 0.4rem;
+    padding: 0.8rem;
+    background-color: #1D3557;
+    color: #1A1A1A;
+    font-family: 'cinzel';
+    text-shadow: 1px 1px 2px #F4A261;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.create-profile-form button:hover {
+    background-color: #F4A261;
+}
+
+.create-profile-form button:active {
+    transform: translateY(1px);
+}
+
+@media (max-width: 640px) {
+    .create-profile-container {
+        padding: 1rem;
+    }
+
+    .create-profile-form {
+        padding: 1.25rem;
+        max-width: 100%;
+    }
+
+    .create-profile-form h2 {
+        font-size: 1.2rem;
+    }
+}

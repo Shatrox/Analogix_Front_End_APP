@@ -7,7 +7,9 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Login from './pages/Login';
 import Register from './pages/Register';
 import HomePage from './pages/HomePage';
-import Navbar from './components/NavBar'
+import Navbar from './components/NavBar';
+import CreateProfile from './pages/CreateProfile';
+import ProfilePage from './pages/ProfilePage';
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/" element = {<HomePage/>} />
         <Route path="/login" element = {<Login />} />
         <Route path="/register" element = {<Register />} />
+        <Route path="/createprofile" element={<CreateProfile />} />
+        <Route path='/profilepage' element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
       
