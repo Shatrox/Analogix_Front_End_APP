@@ -10,9 +10,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1D3557;
+    background-color: transparent;
     padding: 1rem 2rem;
-    color: white;
+    
+    background-image: url('../assets/backgroundHomePage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .navbar-title a {
@@ -34,7 +39,7 @@
 }
 
 .navbar-links-style a {
-    color: #F4A261;
+    color: #1A1A1A;
     font-family: 'cinzel';
     padding: 5px;
     border: 2px solid #F4A261;
@@ -46,4 +51,15 @@
 
 .navbar-links-style a:hover {
     color: #FFD60A;
+}
+
+.logout-button {
+    color: #F4A261;
+    font-family: 'cinzel';
+    padding: 5px;
+    border: 2px solid #F4A261;
+    border-radius: 12px 8px 14px 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
 }

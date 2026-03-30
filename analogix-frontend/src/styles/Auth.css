@@ -10,7 +10,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 
     background-image: url('../assets/backgroundHomePage.png');
     background-size: cover;
@@ -85,4 +85,16 @@
     text-decoration: none;
     margin-top: 4px;
 
+}
+
+.login-navbar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;    
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    padding: 1rem 2rem;
 }

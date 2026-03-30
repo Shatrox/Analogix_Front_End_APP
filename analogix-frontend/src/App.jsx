@@ -10,19 +10,24 @@ import HomePage from './pages/HomePage';
 import Navbar from './components/NavBar';
 import CreateProfile from './pages/CreateProfile';
 import ProfilePage from './pages/ProfilePage';
+import Dashboard from './pages/Dashboard';
+import MyEvents from './pages/MyEvents';
+import MySubscriptions from './pages/MySubscriptions';
 
 
 function App() {
 
   return (
     <BrowserRouter>
-      <Navbar/>
       <Routes>
         <Route path="/" element = {<HomePage/>} />
         <Route path="/login" element = {<Login />} />
         <Route path="/register" element = {<Register />} />
         <Route path="/createprofile" element={<CreateProfile />} />
         <Route path='/profilepage' element={<ProfilePage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/my-events" element={<MyEvents />} />
+        <Route path="/my-subscriptions" element={<MySubscriptions />} />
       </Routes>
     </BrowserRouter>
       

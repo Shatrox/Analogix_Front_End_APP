@@ -1,7 +1,8 @@
-import { use, useEffect, useState } from "react";
-import api, { getPlayerProfileDetails, updatePlayerProfile } from "../services/api";
+import {  useEffect, useState } from "react";
+import { getPlayerProfileDetails, updatePlayerProfile } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import '../styles/ProfilePage.css';
+import Navbar from "../components/NavBar";
 
 const ProfilePage = () => {
     const navigate = useNavigate();
@@ -141,7 +142,11 @@ const ProfilePage = () => {
 }
 
 return (
+
+    <>
+    <Navbar page="profilepage" />
     <div className="profile-container">
+        
         <form className="profile-form" onSubmit={isEditing ? handleSave : (e) => e.preventDefault()}>
             <h2>My Profile</h2>
             {error && <p className="error-message">{error}</p>}
@@ -154,7 +159,7 @@ return (
                 value={formData.biography}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-            />
+                />
 
             <label>Favorite Games:</label>
             <input
@@ -163,7 +168,7 @@ return (
                 value={formData.favoriteGames}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-            />
+                />
 
             <label>Mastery Level</label>
             <input
@@ -172,7 +177,7 @@ return (
                 value={formData.masteryLevel}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-            />
+                />
 
             <label>Favorite Game Tags:</label>
             <input
@@ -181,7 +186,7 @@ return (
                 value={formData.favoriteGameTags}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-            />
+                />
 
             <div className="profile-actions">
                 {/* If not in editing mode, show the Edit button. If in editing mode, show Save and Cancel buttons */}
@@ -210,6 +215,7 @@ return (
 
     </div>
 
+    </>
 );
 };
 

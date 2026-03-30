@@ -44,4 +44,22 @@ export const updatePlayerProfile = async (profileData) => {
     return response.data; // Return updated profile details
 };
 
+export const getParticipatedEvents = async () => {
+    const response = await api.get('/Event/my-participations');
+    return response.data; // Return list of participated events
+};
+
+export const getAllEvents = async () => {
+    const response = await api.get('/Event/all-events');
+    return response.data; // Return list of all events
+};
+
+export const getSubscribedEvents = async () =>{
+    const response = await api.get('/EventSubscription/my-subscriptions'); 
+    return response.data; // Return list of subscribed events 
+}
+
+export const unsubscribeFromEvent = async (eventId) => {
+    await api.delete(`/Event/${eventId}/unsubscribe`);
+}
 export default api;
