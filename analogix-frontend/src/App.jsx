@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage';
 import Dashboard from './pages/Dashboard';
 import MyEvents from './pages/MyEvents';
 import MySubscriptions from './pages/MySubscriptions';
+import CreateEvent from './pages/CreateEvent';
 
 
 function App() {
@@ -28,9 +29,9 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/my-events" element={<MyEvents />} />
         <Route path="/my-subscriptions" element={<MySubscriptions />} />
+        <Route path='/createevent' element={<CreateEvent />} />
       </Routes>
     </BrowserRouter>
-      
   )
 }
 

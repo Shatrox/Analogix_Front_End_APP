@@ -11,7 +11,7 @@ const Navbar = ({ page }) => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         alert('Logged out successfully!');
-        navigate('/login');
+        navigate('/');
     }
 
     const renderLinks = () => {
@@ -19,7 +19,7 @@ const Navbar = ({ page }) => {
             if (page === 'dashboard' || page === 'profilepage' || page === 'my-events' || page === 'my-subscriptions') {
                 return (
                     <>
-                    <li><Link onClick={handleLogout} className="logout-button">Logout</Link></li>
+                    <li><button onClick={handleLogout} className="logout-button">Logout</button></li>
                     </>
                 )
             } 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/NavBar";
 import { getAllEvents } from "../services/api";
+import EventDetailsModal from "../components/EventDetailsModal";
 import '../styles/HomePage.css';
 
 const HomePage = () => {
@@ -8,6 +9,8 @@ const HomePage = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedEventId, setSelectedEventId] = useState(null);
+    const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -27,6 +30,16 @@ const HomePage = () => {
 
     const toggleDescription = () => {
         setIsExpanded(!isExpanded);
+    };
+
+    const handleOpenEventDetails = (eventId) => {
+        setSelectedEventId(eventId);
+        setShowEventDetailsModal(true);
+    };
+
+    const handleCloseEventDetails = () => {
+        setShowEventDetailsModal(false);
+        setSelectedEventId(null);
     };
 
     return(
@@ -79,13 +92,20 @@ const HomePage = () => {
                             <p>Party Owner: {event.creatorName}</p>
                             <p>Location: {event.location}</p>
                             
-                            <button className="btn-details">View Details</button>
+                            <button className="btn-details" onClick={() => handleOpenEventDetails(event.id)}>View Details</button>
                         </div>
                     ))}
 
                 </div>
 
             </main>
+
+            {showEventDetailsModal && selectedEventId && (
+                <EventDetailsModal
+                    eventId={selectedEventId}
+                    onClose={handleCloseEventDetails}
+                />
+            )}
         </div>
     )
 }

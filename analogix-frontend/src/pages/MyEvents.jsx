@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/NavBar";
-import { getParticipatedEvents } from "../services/api";
+import { getMyEvents } from "../services/api";
 import '../styles/MyEvents.css';
+import SeeSubscriptionsModal from "../components/SeeSubscriptionsModal";
 
 
-const MyEvents = () => {
+const MyEvents = ({onClose}) => {
     const [events, setEvents] = useState([]); 
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null); 
+    const [error, setError] = useState(null);
+    const [showSubscriptionsModal, setShowSubscriptionsModal] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState(null);
     
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const myEvents = await getParticipatedEvents();
+                const myEvents = await getMyEvents();
                 setEvents(myEvents);
             } catch (err) {
                 setError('Failed to load your events. Please try again later.');
@@ -24,22 +27,35 @@ const MyEvents = () => {
         fetchEvents();
     }, []);
 
-    if (loading) {
-        return (<div>Loading...</div>);
-    }
+    const handleOpenSubscriptions = (eventId) => {
+        setSelectedEventId(eventId);
+        setShowSubscriptionsModal(true);
+    };
 
-    if (error) {
-        return (<div>{error}</div>);
-    }
+    const handleCloseSubscriptions = () => {
+        setShowSubscriptionsModal(false);
+        setSelectedEventId(null);
+    };
 
-    return (
-        
-            
-            <div className="my-events-container">
-                <Navbar page="my-events" />
-                <h1>My Events</h1>
-                <div className="events-section">
+    const content = (
+        // If onClose is provided, we are in a modal context and should not render the Navbar
+        <div className={onClose ? "my-events-panel" : "my-events-content"}>
+            <div className="my-events-header">
+                <div>
+                    <h1>My Events</h1>
                     <h2>All Events</h2>
+                </div>
+                {onClose && (
+                    <button type="button" className="my-events-close" onClick={onClose}>
+                        Close
+                    </button>
+                )}
+            </div>
+
+            {loading && <p className="my-events-message">Loading...</p>}
+            {error && <p className="my-events-message">{error}</p>}
+            {!loading && !error && (
+                <div className="events-section">
                     {events.length > 0 ? (
                         <div className="events-list">
                             {events.map(event => (
@@ -52,19 +68,40 @@ const MyEvents = () => {
                                     <p>Location: {event.location}</p>
                                     <p>Max Participants: {event.maxParticipants}</p>
                                     <p>Participants: {event.participants?.length > 0 ? event.participants.join(', ') : 'No participants yet.'}</p>
+                                    <button
+                                        type="button"
+                                        className="btn-details"
+                                        onClick={() => handleOpenSubscriptions(event.id)}
+                                    >
+                                        See Subscriptions
+                                    </button>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p>You are not participating in any events yet.</p>
+                        <p className="my-events-message">You have not created any events yet.</p>
                     )}
-
                 </div>
+            )}
 
-            </div>
-            
-            
-        
+            {showSubscriptionsModal && selectedEventId && (
+                <SeeSubscriptionsModal
+                    eventId={selectedEventId}
+                    onClose={handleCloseSubscriptions}
+                />
+            )}
+        </div>
+    );
+
+    if (onClose) {
+        return content;
+    }
+
+    return (
+        <div className="my-events-container">
+            <Navbar page="my-events" />
+            {content}
+        </div>
     );
 };
 

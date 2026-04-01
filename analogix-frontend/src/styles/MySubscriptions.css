@@ -1,3 +1,72 @@
+.my-subscriptions-container {
+    min-height: 100vh;
+    background-image: url('../assets/backgroundHomePage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.subscriptions-content,
+.subscriptions-panel {
+    width: min(100%, 960px);
+    margin: 2rem auto;
+    padding: 2rem;
+    border: 2px solid #F4A261;
+    border-radius: 10px;
+    background-color: #1d355765;
+    box-shadow: 0 2px 6px rgb(0, 0, 0);
+}
+
+.subscriptions-panel {
+    max-height: 85vh;
+    overflow-y: auto;
+    margin: 0;
+}
+
+.subscriptions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.subscriptions-header h1 {
+    margin: 0 0 0.5rem 0;
+    font-family: 'cinzel';
+    font-size: 2.5rem;
+    color: #1A1A1A;
+    text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
+}
+
+.subscriptions-header h2 {
+    margin: 0;
+    font-family: 'cinzel';
+    font-size: 1.5rem;
+    color: #1A1A1A;
+    text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
+}
+
+.subscriptions-close {
+    padding: 0.8rem 1rem;
+    background-color: transparent;
+    color: #F4A261;
+    border: 2px solid #F4A261;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.subscriptions-close:hover {
+    background-color: rgba(244, 162, 97, 0.15);
+}
+
+.subscriptions-message {
+    color: #F4A261;
+    font-size: 1rem;
+}
+
 .subscriptions-container {
     padding: 2rem;
 }

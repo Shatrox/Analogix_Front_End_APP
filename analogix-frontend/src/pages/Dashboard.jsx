@@ -1,20 +1,64 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getPlayerProfileDetails } from "../services/api";
+import { getPlayerProfileDetails, getAllEventsNotOwned, getSubscribedEvents } from "../services/api";
 import Navbar from "../components/NavBar";
 import '../styles/Dashboard.css';
+import CreateEvent from './CreateEvent';
+import MyEvents from './MyEvents';
+import ProfilePage from "./ProfilePage";
+import MySubscriptions from "./MySubscriptions";
+import EventDetailsModal from "../components/EventDetailsModal";
 
 const Dashboard = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [profile, setProfile] = useState(null);
+    const [events, setEvents] = useState([]);
+    const [subscribedEvents, setSubscribedEvents] = useState([]);
+    const [showCreateEvent, setShowCreateEvent] = useState(false);
+    const [showMyEvents, setShowMyEvents] = useState(false);
+    const [showProfilePage, setShowProfilePage] = useState(false);
+    const [showMySubscriptions, setShowMySubscriptions] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState(null);
+    const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    const handleOpenEventDetails = (eventId) => {
+        setSelectedEventId(eventId);
+        setShowEventDetailsModal(true);
+    };
+
+    const handleCloseEventDetails = () => {
+        setShowEventDetailsModal(false);
+        setSelectedEventId(null);
+    };
+
+    const filteredEvents = events.filter(event => {
+        const searchTermLower = searchTerm.toLowerCase();
+        const eventTitle = event.title?.toLowerCase() || '';
+        const eventLocation = event.location?.toLowerCase() || '';
+        const eventGames = event.gameTags?.join(' ').toLowerCase() || '';
+
+        return (
+            (profile && event.creatorId !== profile.id) &&
+            (eventTitle.includes(searchTermLower) ||
+            eventLocation.includes(searchTermLower) ||
+            eventGames.includes(searchTermLower))
+        );
+    });
 
     useEffect(() => {
         const loadDashboard = async () => {
             try {
-                const details = await getPlayerProfileDetails();
+                const [details, allEventsNotOwned, subscribedEvents] = await Promise.all([
+                    getPlayerProfileDetails(),
+                    getAllEventsNotOwned(),
+                    getSubscribedEvents(),
+                ]);
                 setProfile(details);
+                setEvents(allEventsNotOwned);
+                setSubscribedEvents(subscribedEvents);
             } catch (err) {
                 if (err?.response?.status === 401) {
                     localStorage.removeItem('token');
@@ -64,7 +108,7 @@ const Dashboard = () => {
                     <article className="dashboard-panel">
                         <h3>Profile Summary</h3>
                         <p>{profile?.biography || 'No biography added yet.'}</p>
-                        <Link to="/profilepage">Open Profile</Link>
+                        <button className="dashboard-profile-btn" onClick={() => setShowProfilePage(true)}>Open Profile</button>
                     </article>
 
                     <article className="dashboard-panel">
@@ -80,13 +124,88 @@ const Dashboard = () => {
                     <article className="dashboard-panel">
                         <h3>Quick Actions</h3>
                         <div className="dashboard-actions">
-                            <Link to="/profilepage">Edit Profile</Link>
-                            <Link to="/my-events">My Events</Link>
-                            <Link to="/my-subscriptions">My Subscriptions</Link>
+                            <button className="dashboard-profile-btn" onClick={() => setShowProfilePage(true)}>View Profile</button>
+                            <button className="dashboard-my-events-btn" onClick={() => setShowMyEvents(true)}>My Events</button>
+                            <button className="dashboard-subscriptions-btn" onClick={() => setShowMySubscriptions(true)}>My Subscriptions</button>    
+                            <button className="dashboard-create-event-btn" onClick={() => setShowCreateEvent(true)}>Create Event</button>
                         </div>
                     </article>
                 </section>
+                    
+                <section className="event-section-style">
+                    <div className="title-style">
+                        <h2>Events Available</h2>
+                    </div>
+                    <div className="search-bar-container">
+                        <input
+                            type="text"
+                            placeholder="Search events by game, title, or location..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="search-input"
+                        />
+                    </div>
+
+                <div className="events-display-style">
+                         {loading && <p>Loading events...</p>}
+                    {error && <p>{error}</p>}
+                    {filteredEvents.map(event => (
+                        <div key={event.id} className="event-card">
+                            <h3>{event.title}</h3>
+                            <p><strong>Date:</strong> {new Date(event.startDate).toLocaleDateString()}</p>
+                            <p>Party Owner: {event.creatorName}</p>
+                            <p>Location: {event.location}</p>
+                            
+                            <button className="btn-details" onClick={() => handleOpenEventDetails(event.id)}>View Details</button>
+                        </div>
+                    ))}
+
+                </div>
+                </section>
             </main>
+            
+            {showProfilePage && (
+                <div
+                    className="profile-modal-overlay"
+                    onClick={(e) => { if (e.target === e.currentTarget) setShowProfilePage(false); }}
+                >
+                    <ProfilePage onClose={() => setShowProfilePage(false)} />
+                </div>
+            )}
+
+            {showMyEvents && (
+                <div
+                    className="my-events-modal-overlay"
+                    onClick={(e) => { if (e.target === e.currentTarget) setShowMyEvents(false); }}
+                >
+                    <MyEvents onClose={() => setShowMyEvents(false)} />
+                </div>
+            )}
+
+            {showCreateEvent && (
+                <div
+                    className="event-modal-overlay"
+                    onClick={(e) => { if (e.target === e.currentTarget) setShowCreateEvent(false); }}
+                >
+                    <CreateEvent onClose={() => setShowCreateEvent(false)} />
+                </div>
+            )}
+
+            {showMySubscriptions && (
+                <div
+                    className="my-subscriptions-modal-overlay"
+                    onClick={(e) => { if (e.target === e.currentTarget) setShowMySubscriptions(false); }}
+                >
+                    <MySubscriptions onClose={() => setShowMySubscriptions(false)} />
+                </div>
+            )}
+
+            {showEventDetailsModal && selectedEventId && (
+                <EventDetailsModal
+                    eventId={selectedEventId}
+                    onClose={handleCloseEventDetails}
+                />
+            )}
         </div>
     );
 }

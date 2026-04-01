@@ -27,7 +27,7 @@ const CreateProfile = () => {
                 favoriteGameTags: tags,
             });
             alert("Profile created successfully!");
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             console.error("Profile creation failed:", error);
 

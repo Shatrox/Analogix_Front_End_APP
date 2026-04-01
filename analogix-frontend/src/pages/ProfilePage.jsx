@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import '../styles/ProfilePage.css';
 import Navbar from "../components/NavBar";
 
-const ProfilePage = () => {
+const ProfilePage = ({ onClose }) => {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
@@ -133,20 +133,13 @@ const ProfilePage = () => {
 
     if (loading) {
         return(
-            <div className="profile-container">
-                <div className="profile-form">
-                    <h2>Loading profile...</h2>
-                </div>
+            <div className="profile-form">
+                <h2>Loading profile...</h2>
             </div>
         );
-}
+    }
 
-return (
-
-    <>
-    <Navbar page="profilepage" />
-    <div className="profile-container">
-        
+    const form = (
         <form className="profile-form" onSubmit={isEditing ? handleSave : (e) => e.preventDefault()}>
             <h2>My Profile</h2>
             {error && <p className="error-message">{error}</p>}
@@ -159,64 +152,72 @@ return (
                 value={formData.biography}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                />
+            />
 
             <label>Favorite Games:</label>
             <input
-                type= "text"
+                type="text"
                 name="favoriteGames"
                 value={formData.favoriteGames}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                />
+            />
 
             <label>Mastery Level</label>
             <input
-                type= "number"
+                type="number"
                 name="masteryLevel"
                 value={formData.masteryLevel}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                />
+            />
 
             <label>Favorite Game Tags:</label>
             <input
-                type= "text"
+                type="text"
                 name="favoriteGameTags"
                 value={formData.favoriteGameTags}
                 onChange={handleInputChange}
                 disabled={!isEditing}
-                />
+            />
 
             <div className="profile-actions">
-                {/* If not in editing mode, show the Edit button. If in editing mode, show Save and Cancel buttons */}
                 {!isEditing ? (
-                    <button type="button" onClick={handleEdit}>Edit Profile</button>
+                    <>
+                        <button type="button" onClick={handleEdit}>Edit Profile</button>
+                        {onClose && (
+                            <button type="button" className="secondary" onClick={onClose}>Close</button>
+                        )}
+                    </>
                 ) : (
                     <>
-                    <button type="submit" disabled={saving}>
-                        {saving ? 'Saving...' : 'Save Profile'}
-                    </button>
-                    <button
-                        type="button"
-                        className="secondary"
-                        onClick={handleCancel}
-                        disabled={saving}
+                        <button type="submit" disabled={saving}>
+                            {saving ? 'Saving...' : 'Save Profile'}
+                        </button>
+                        <button
+                            type="button"
+                            className="secondary"
+                            onClick={handleCancel}
+                            disabled={saving}
                         >
-                        Cancel
-                    </button>   
+                            Cancel
+                        </button>
                     </>
                 )}
-
             </div>
         </form>
+    );
 
+    if (onClose) return form;
 
-
-    </div>
-
-    </>
-);
+    return (
+        <>
+            <Navbar page="profilepage" />
+            <div className="profile-container">
+                {form}
+            </div>
+        </>
+    );
 };
 
 export default ProfilePage;

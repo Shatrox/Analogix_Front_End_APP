@@ -74,3 +74,111 @@
 	color: #d90429;
 	font-weight: 600;
 }
+
+.dashboard-create-event-btn {
+	color: #1A1A1A;
+	background-color: #F4A261;
+	border-radius: 6px;
+	padding: 0.35rem 0.6rem;
+	border: none;
+	cursor: pointer;
+	font-size: inherit;
+	font-family: inherit;
+}
+
+.dashboard-profile-btn {
+	color: #1A1A1A;
+	background-color: #F4A261;
+	border-radius: 6px;
+	padding: 0.35rem 0.6rem;
+	border: none;
+	cursor: pointer;
+	font-size: inherit;
+	font-family: inherit;
+}
+
+.dashboard-my-events-btn {
+	color: #1A1A1A;
+	background-color: #F4A261;
+	border-radius: 6px;
+	padding: 0.35rem 0.6rem;
+	border: none;
+	cursor: pointer;
+	font-size: inherit;
+	font-family: inherit;
+}
+
+.dashboard-subscriptions-btn {
+	color: #1A1A1A;
+	background-color: #F4A261;
+	border-radius: 6px;
+	padding: 0.35rem 0.6rem;
+	border: none;
+	cursor: pointer;
+	font-size: inherit;
+	font-family: inherit;
+}
+
+.dashboard-profile-btn:hover {
+	background-color: #E76F51;
+}
+
+.dashboard-my-events-btn:hover {
+	background-color: #E76F51;
+}
+
+.dashboard-create-event-btn:hover {
+	background-color: #E76F51;
+}
+
+.dashboard-subscriptions-btn:hover {
+	background-color: #E76F51;
+}
+
+.event-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.55);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	overflow-y: auto;
+}
+
+.profile-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.55);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	overflow-y: auto;
+}
+
+.my-events-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.55);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	overflow-y: auto;
+}
+
+.my-subscriptions-modal-overlay {
+	position: fixed;
+	inset: 0;
+	background-color: rgba(0, 0, 0, 0.55);
+	z-index: 1000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	overflow-y: auto;
+}

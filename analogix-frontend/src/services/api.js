@@ -54,12 +54,50 @@ export const getAllEvents = async () => {
     return response.data; // Return list of all events
 };
 
+export const getMyEvents = async () => {
+    const response = await api.get('/Event/my-events');
+    return response.data; // Return list of events created by the user
+}
+
+export const getAllEventsNotOwned = async () => {
+    const response = await api.get('/Event/all-events-not-owned');
+    return response.data; // Return list of events not owned by the user
+}
+
 export const getSubscribedEvents = async () =>{
     const response = await api.get('/EventSubscription/my-subscriptions'); 
     return response.data; // Return list of subscribed events 
 }
 
 export const unsubscribeFromEvent = async (eventId) => {
-    await api.delete(`/Event/${eventId}/unsubscribe`);
+    await api.post(`/EventSubscription/event/${eventId}/unsubscribe`);
 }
+
+export const createEvent = async (eventData) => {
+    const response = await api.post('/Event/events/create', eventData);
+    return response.data; // Return created event details
+}
+
+export const getEventDetails = async (eventId) => {
+    const response = await api.get(`/Event/events/${eventId}`);
+    return response.data; // Return event details
+}
+
+export const subscribeToEvent = async (eventId) => {
+    await api.post(`/EventSubscription/event/${eventId}/subscribe`);
+}
+
+export const getEventSubscriptions = async (eventId) => {
+    const response = await api.get(`/EventSubscription/event/${eventId}/subscriptions`);
+    return response.data; // Return list of subscriptions for the event
+}
+
+export const acceptSubscription = async (subscriptionId) => {
+    await api.patch(`/EventSubscription/subscription/${subscriptionId}/accept`);
+}
+
+export const refuseSubscription = async (subscriptionId) => {
+    await api.patch(`/EventSubscription/subscription/${subscriptionId}/refuse`);
+}
+
 export default api;
