@@ -28,7 +28,7 @@
     padding: 2rem;
     border: 2px solid #F4A261;
     border-radius: 8px;
-    background-color: #1d355765;
+    background-color: #1d3557;
     box-shadow: 0 2px 6px rgb(0, 0, 0);
 }
 
@@ -48,7 +48,8 @@
 }
 
 .profile-form textarea,
-.profile-form input {
+.profile-form input,
+.profile-form select {
     width: 100%;
     box-sizing: border-box;
     margin: 0;
@@ -74,7 +75,7 @@
 .profile-actions button {
     flex: 1;
     padding: 0.8rem;
-    background-color: #1D3557;
+    background-color: #284970;
     color: #1A1A1A;
     font-family: 'cinzel';
     text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;

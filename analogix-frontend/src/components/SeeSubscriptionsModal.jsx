@@ -48,6 +48,18 @@ const SeeSubscriptionsModal = ({ eventId, onClose }) => {
         }
     };
 
+    const handleDeleteSubscription = async (subscriptionId) => {
+        const confirmed = window.confirm("Delete this subscription?");
+        if (!confirmed) return;
+
+        try {
+            await refuseSubscription(subscriptionId);
+            await loadSubscriptions();
+        } catch (err) {
+            alert("Failed to delete the subscription. Please try again later.");
+        }
+    };
+
     return (
         <div className="event-details-modal" onClick={onClose}>
             <div className="event-details-content" onClick={(e) => e.stopPropagation()}>
@@ -65,15 +77,25 @@ const SeeSubscriptionsModal = ({ eventId, onClose }) => {
                             <ul>
                                 {subscriptions.map((sub) => (
                                     <li key={sub.id}>
-                                        {sub.status === "Pending" ? (
+                                        {String(sub.status || "").trim().toLowerCase() === "pending" ? (
                                             <div>
-                                                <span>{sub.userName || sub.playerName || "Unknown player"}</span>
+                                                <span>{sub.userName }</span>
                                                 <button
                                                     className="btn-accept"
                                                     onClick={() => handleAcceptSubscription(sub.id)}
                                                 >
                                                     Accept
                                                 </button>
+                                                <button
+                                                    className="btn-refuse"
+                                                    onClick={() => handleRefuseSubscription(sub.id)}
+                                                >
+                                                    Refuse
+                                                </button>
+                                            </div>
+                                        ) : String(sub.status || "").trim().toLowerCase() === "accepted" ? (
+                                            <div>
+                                                <span>{sub.userName || sub.playerName || "Unknown player"} - Subscription Accepted</span>
                                                 <button
                                                     className="btn-refuse"
                                                     onClick={() => handleRefuseSubscription(sub.id)}

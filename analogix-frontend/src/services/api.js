@@ -78,6 +78,11 @@ export const createEvent = async (eventData) => {
     return response.data; // Return created event details
 }
 
+export const updateEvent = async (eventId, eventData) => {
+    const response = await api.put(`/Event/events/update/${eventId}`, eventData);
+    return response.data; // Return updated event details
+}
+
 export const getEventDetails = async (eventId) => {
     const response = await api.get(`/Event/events/${eventId}`);
     return response.data; // Return event details

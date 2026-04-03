@@ -7,6 +7,20 @@ import Navbar from "../components/NavBar";
 const ProfilePage = ({ onClose }) => {
     const navigate = useNavigate();
 
+    const masteryLevelOptions = [
+        { value: '1', label: 'Meeple Newbie' },
+        { value: '2', label: 'Dice Goblin' },
+        { value: '3', label: 'Rulebook Wizard' },
+        { value: '4', label: 'Archduke Of Meeples' },
+    ];
+
+    const masteryAliases = {
+        meeplenewbie: '1',
+        dicegoblin: '2',
+        rulebookwizard: '3',
+        archdukeofmeeples: '4',
+    };
+
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -19,6 +33,33 @@ const ProfilePage = ({ onClose }) => {
         masteryLevel: '',
         favoriteGameTags: '',
     });
+
+    const normalizeMasteryLevelValue = (value) => {
+        if (value === null || value === undefined || value === '') {
+            return '';
+        }
+
+        const numericValue = Number(value);
+        if (Number.isFinite(numericValue) && numericValue >= 1 && numericValue <= 4) {
+            return String(numericValue);
+        }
+
+        const normalizedText = String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (masteryAliases[normalizedText]) {
+            return masteryAliases[normalizedText];
+        }
+
+        return '';
+    };
+
+    const getMasteryLevelLabel = (level) => {
+        const normalized = normalizeMasteryLevelValue(level);
+        const found = masteryLevelOptions.find((option) => option.value === normalized);
+        if (found) return found.label;
+
+        const rawText = String(level ?? '').trim();
+        return rawText ? rawText : 'Not set';
+    };
 
     useEffect(() => {
         const displayProfileDetails = async () => {
@@ -47,12 +88,13 @@ const ProfilePage = ({ onClose }) => {
                 setFormData({
                     biography: profileDetails?.biography || '',
                     favoriteGames: profileDetails?.favoriteGames || '',
-                    masteryLevel: profileDetails?.masteryLevel || '',
+                    masteryLevel: normalizeMasteryLevelValue(profileDetails?.masteryLevel),
                     favoriteGameTags: normalizeFavoriteTagsForInput(profileDetails?.favoriteGameTags || ''),
                 });
             } catch (error) {
                 if (error?.response?.status === 401) {
                     localStorage.removeItem('token');
+                    localStorage.removeItem('userId');
                     navigate('/login');
                     return;
                 }
@@ -107,12 +149,14 @@ const ProfilePage = ({ onClose }) => {
                 .split(',')
                 .map(tag => tag.trim())
                 .filter(tag => tag.length > 0);
+
+            const normalizedMasteryLevel = normalizeMasteryLevelValue(formData.masteryLevel);
             
         
             await updatePlayerProfile({
                 biography: formData.biography.trim() || null,
                 favoriteGames: formData.favoriteGames,
-                masteryLevel: Number(formData.masteryLevel),
+                masteryLevel: normalizedMasteryLevel === '' ? null : Number(normalizedMasteryLevel),
                 favoriteGameTags: tags,
             });
 
@@ -121,6 +165,7 @@ const ProfilePage = ({ onClose }) => {
         } catch (error) {
             if (error?.response?.status === 401) {
                 localStorage.removeItem('token');
+                localStorage.removeItem('userId');
                 navigate('/login');
                 return;
             }
@@ -164,13 +209,27 @@ const ProfilePage = ({ onClose }) => {
             />
 
             <label>Mastery Level</label>
-            <input
-                type="number"
-                name="masteryLevel"
-                value={formData.masteryLevel}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-            />
+            {isEditing ? (
+                <select
+                    name="masteryLevel"
+                    value={formData.masteryLevel}
+                    onChange={handleInputChange}
+                >
+                    <option value="">Select mastery level</option>
+                    {masteryLevelOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
+                    ))}
+                </select>
+            ) : (
+                <input
+                    type="text"
+                    value={getMasteryLevelLabel(formData.masteryLevel)}
+                    disabled
+                    readOnly
+                />
+            )}
 
             <label>Favorite Game Tags:</label>
             <input

@@ -15,7 +15,7 @@
     padding: 2rem;
     border: 2px solid #F4A261;
     border-radius: 10px;
-    background-color: #1d355765;
+    background-color:  #1d3557;
     box-shadow: 0 2px 6px rgb(0, 0, 0);
 }
 
@@ -92,10 +92,49 @@
 
 .event-card {
     border: 2px solid #F4A261;
+    background-color: #1A1A1A;
     border-radius: 8px;
     padding: 1rem;
-	background-color: rgba(255, 255, 255, 0.92);
-	color: #1A1A1A;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.event-card p{
+    color: #F4A261;
+   
+    font-family: 'cinzel';
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.event-card .name-line {
+    display: flex;
+    border: 2px solid #F4A261;
+    border-radius: 6px;
+    margin: 2px;
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+}
+
+.event-card .name-label {
+    color: #f2c078;
+    font-weight: 700;
+}
+
+.event-card .name-value {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.event-card h3 {
+    font-family: 'cinzel';
+    color:#F4A261;
+    text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
 }
 
 .my-events-message {

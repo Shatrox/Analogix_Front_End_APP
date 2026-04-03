@@ -59,13 +59,13 @@ const CreateEvent = ({ onClose }) => {
             />
             <input
                 placeholder="Start Date"
-                type="date"
+                type="datetime-local"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
             />
             <input
                 placeholder="End Date"
-                type="date"
+                type="datetime-local"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
             />

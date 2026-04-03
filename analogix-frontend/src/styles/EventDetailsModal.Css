@@ -12,7 +12,7 @@
 }
 
 .event-details-content {
-    background: white;
+    background: #E76F51;
     padding: 20px;
     border-radius: 8px;
     max-width: 500px;
@@ -53,4 +53,39 @@
     align-items: center;
     padding: 8px 0;
     border-bottom: 1px solid #eee;
+}
+
+.subscriptions-list li > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.subscriptions-list li span {
+    color: #1A1A1A;
+}
+
+.btn-accept,
+.btn-refuse {
+    border: none;
+    border-radius: 4px;
+    padding: 0.45rem 0.75rem;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.btn-accept {
+    background-color: #1D3557;
+}
+
+.btn-refuse {
+    background-color: #E76F51;
+}
+
+.btn-accept:hover,
+.btn-refuse:hover {
+    filter: brightness(0.95);
 }

@@ -2,14 +2,14 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/NavBar";
 import { getMyEvents } from "../services/api";
 import '../styles/MyEvents.css';
-import SeeSubscriptionsModal from "../components/SeeSubscriptionsModal";
+import EventDetailsModal from "../components/EventDetailsModal";
 
 
 const MyEvents = ({onClose}) => {
     const [events, setEvents] = useState([]); 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [showSubscriptionsModal, setShowSubscriptionsModal] = useState(false);
+    const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
     
     useEffect(() => {
@@ -27,18 +27,17 @@ const MyEvents = ({onClose}) => {
         fetchEvents();
     }, []);
 
-    const handleOpenSubscriptions = (eventId) => {
+    const handleOpenEventDetails = (eventId) => {
         setSelectedEventId(eventId);
-        setShowSubscriptionsModal(true);
+        setShowEventDetailsModal(true);
     };
 
-    const handleCloseSubscriptions = () => {
-        setShowSubscriptionsModal(false);
+    const handleCloseEventDetails = () => {
+        setShowEventDetailsModal(false);
         setSelectedEventId(null);
     };
 
     const content = (
-        // If onClose is provided, we are in a modal context and should not render the Navbar
         <div className={onClose ? "my-events-panel" : "my-events-content"}>
             <div className="my-events-header">
                 <div>
@@ -61,19 +60,37 @@ const MyEvents = ({onClose}) => {
                             {events.map(event => (
                                 <div key={event.id} className="event-card">
                                     <h3>{event.title}</h3>
-                                    <p>Party Owner: {event.creatorName}</p>
-                                    <p>{event.description}</p>
-                                    <p>Start Date: {new Date(event.startDate).toLocaleDateString()}</p>
-                                    <p>End Date: {new Date(event.endDate).toLocaleDateString()}</p>
-                                    <p>Location: {event.location}</p>
-                                    <p>Max Participants: {event.maxParticipants}</p>
-                                    <p>Participants: {event.participants?.length > 0 ? event.participants.join(', ') : 'No participants yet.'}</p>
+                                   
+                                    <p className="name-line">
+                                        <span className="name-label">Description:</span>{' '}
+                                        <span className="name-value">{event.description}</span>
+                                    </p>
+                                    <p className="name-line">
+                                        <span className="name-label">Start Date:</span>{' '}
+                                        <span className="name-value">{new Date(event.startDate).toLocaleDateString()}</span>
+                                    </p>
+                                    <p className="name-line">
+                                        <span className="name-label">End Date:</span>{' '}
+                                        <span className="name-value">{new Date(event.endDate).toLocaleDateString()}</span>
+                                    </p>
+                                    <p className="name-line">
+                                        <span className="name-label">Location:</span>{' '}
+                                        <span className="name-value">{event.location}</span>
+                                    </p>
+                                    <p className="name-line">
+                                        <span className="name-label">Max Participants:</span>{' '}
+                                        <span className="name-value">{event.maxParticipants}</span>
+                                    </p>
+                                    <p className="name-line">
+                                        <span className="name-label">Participants:</span>{' '}
+                                        <span className="name-value">{event.participants?.length > 0 ? event.participants.join(', ') : 'No participants yet.'}</span>
+                                    </p>
                                     <button
                                         type="button"
                                         className="btn-details"
-                                        onClick={() => handleOpenSubscriptions(event.id)}
+                                        onClick={() => handleOpenEventDetails(event.id)}
                                     >
-                                        See Subscriptions
+                                        View Details
                                     </button>
                                 </div>
                             ))}
@@ -84,10 +101,10 @@ const MyEvents = ({onClose}) => {
                 </div>
             )}
 
-            {showSubscriptionsModal && selectedEventId && (
-                <SeeSubscriptionsModal
+            {showEventDetailsModal && selectedEventId && (
+                <EventDetailsModal
                     eventId={selectedEventId}
-                    onClose={handleCloseSubscriptions}
+                    onClose={handleCloseEventDetails}
                 />
             )}
         </div>

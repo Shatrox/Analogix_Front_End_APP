@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
-import { getEventDetails, subscribeToEvent, unsubscribeFromEvent, getEventSubscriptions, acceptSubscription, refuseSubscription, getSubscribedEvents } from "../services/api"; 
+import { getEventDetails, subscribeToEvent, getEventSubscriptions, acceptSubscription, refuseSubscription, getSubscribedEvents } from "../services/api"; 
 import '../styles/EventDetailsModal.css';
+import UpdateEventModal from "./UpdateEventModal";
 
 const EventDetailsModal = ({ eventId, onClose }) => {
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [subscriptionsStatus, setSubscriptionsStatus] = useState(null);
-    const [isCreator, setIsCreator] = useState(false);
     const [showSubscriptions, setShowSubscriptions] = useState(false);
     const [subscriptions, setSubscriptions] = useState([]);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
 
     const isAuthenticated = !!localStorage.getItem('token');
-    const currentUserId = Number(localStorage.getItem('userId'));
+    const currentUserId = localStorage.getItem('userId');
 
     useEffect(() => {
         const fetchEventDetails = async () => {
@@ -20,23 +21,16 @@ const EventDetailsModal = ({ eventId, onClose }) => {
                 setLoading(true);
                 const eventDetails = await getEventDetails(eventId);
                 setEvent(eventDetails);
+                setSubscriptionsStatus(null);
 
                 if (isAuthenticated) {
-                    
-                    // Check if the current user is the creator of the event
-                    if (eventDetails.creatorId === currentUserId) {
-                        setIsCreator(true);
-                    }
-                    // Check if the current user is subscribed to the event and get their subscription status
                     const mySubscriptions = await getSubscribedEvents();
-                    console.log('My Subscriptions:', mySubscriptions, 'eventId:', eventId, 'currentUserId:', currentUserId);
-                    const userSubscription = mySubscriptions.find(p => Number(p.eventId) === eventId && Number(p.userId) === currentUserId);
+                    const userSubscription = (mySubscriptions || []).find(
+                        (subscription) => Number(subscription.eventId) === Number(eventId)
+                    );
                     if (userSubscription) {
                         setSubscriptionsStatus(userSubscription.status);
-                    }else {
-                        setSubscriptionsStatus(null);
                     }
-
                 }
             } catch (err) {
                 setError('Failed to load event details. Please try again later.');
@@ -63,17 +57,6 @@ const EventDetailsModal = ({ eventId, onClose }) => {
             alert('Failed to subscribe to the event. Please try again later.'); 
         }
     };
-
-    const handleUnsubscribe = async () => {
-        try {
-            await unsubscribeFromEvent(eventId);
-            setSubscriptionsStatus(null);
-            alert('You have unsubscribed from the event.');
-        } catch (err) {
-            alert('Failed to unsubscribe from the event. Please try again later.');
-        }
-    };
-
 
     const handleShowSubscriptions = async () => {
         try {
@@ -105,6 +88,10 @@ const EventDetailsModal = ({ eventId, onClose }) => {
         } catch (err) {
             alert('Failed to refuse the subscription. Please try again later.');
         }
+    };
+
+    const handleEventUpdated = (updatedEvent) => {
+        setEvent(updatedEvent);
     };
 
 
@@ -139,6 +126,20 @@ const EventDetailsModal = ({ eventId, onClose }) => {
             ? event.gameTags
             : [];
     const participants = Array.isArray(event.participants) ? event.participants : [];
+    const eventCreatorId = event.creatorId ?? event.creator?.id;
+    const normalizedCurrentUserId = currentUserId ? String(currentUserId).trim() : '';
+    const normalizedEventCreatorId = eventCreatorId !== undefined && eventCreatorId !== null
+        ? String(eventCreatorId).trim()
+        : '';
+    const currentUserIdAsNumber = Number(normalizedCurrentUserId);
+    const eventCreatorIdAsNumber = Number(normalizedEventCreatorId);
+    const sameNumericId = Number.isFinite(currentUserIdAsNumber) && Number.isFinite(eventCreatorIdAsNumber)
+        ? currentUserIdAsNumber === eventCreatorIdAsNumber
+        : false;
+    const sameStringId = normalizedCurrentUserId !== '' && normalizedEventCreatorId !== ''
+        ? normalizedCurrentUserId.toLowerCase() === normalizedEventCreatorId.toLowerCase()
+        : false;
+    const isCreator = isAuthenticated && (sameNumericId || sameStringId);
 
     return (
         <div className="event-details-modal" onClick={onClose}>
@@ -149,34 +150,32 @@ const EventDetailsModal = ({ eventId, onClose }) => {
                 <p><strong>Start Date:</strong> {new Date(event.startDate).toLocaleString()}</p>
                 <p><strong>End Date:</strong> {new Date(event.endDate).toLocaleString()}</p>
                 <p><strong>Location:</strong> {event.location}</p>
-                <p><strong>Places Taken:</strong> {event.participants.length} / {event.maxParticipants}</p>
-                <p><strong>Participants:</strong> {participants.length > 0 ? participants.join(', ') : 'No participants yet.'}</p>
+                <p><strong>Participants:</strong> {participants.length} / {event.maxParticipants}</p>
                 <p><strong>Creator:</strong> {event.creator || event.creatorName || 'Unknown'}</p>
                 <p><strong>Tags:</strong> {tags.length > 0 ? tags.join(', ') : 'No tags'}</p>
 
                 <div className="event-details-modal-actions">
-                    {!isAuthenticated &&(
-                        <p>You need to be logged in to subscribe to this event.</p>
-                    )}
-                    {isAuthenticated && !isCreator && (
-                         <>
-                            {subscriptionsStatus === "Accepted" && (
-                                <p>Your subscription status: {subscriptionsStatus} <button onClick={handleUnsubscribe}>Unsubscribe</button></p>
-                            )}
-                            {subscriptionsStatus === "Pending" && (
-                                <p>Your subscription status: {subscriptionsStatus} <button onClick={handleUnsubscribe}>Unsubscribe</button></p>
-                            )}
-                            {!subscriptionsStatus && (
-                                <button className="btn-subscribe" onClick={handleSubscribe}>Subscribe to Event</button>
-                            )}
-                        </>
-                    )}
-                    {isCreator && (
-                        <>
-                            <button> Manage Event</button>
-                            <button onClick={handleShowSubscriptions}>See Subscriptions</button>
-                        </>
-                    )}
+                    
+                    {isAuthenticated && (
+                    <>
+                    {isCreator ? (
+                    <>
+                        <button onClick={() => setShowUpdateModal(true)}>Manage Event</button>
+                        <button onClick={handleShowSubscriptions}>See Subscriptions</button>
+                    </>
+                    ) : (
+                    <>
+                    {subscriptionsStatus ? (
+                        <p>Your subscription status: {subscriptionsStatus}</p>
+                    ) : (
+                        <button className="btn-subscribe" onClick={handleSubscribe}>
+                            Subscribe to Event
+                        </button>
+                )}
+            </>
+        )}
+    </>
+)}
                 </div>
 
                 {showSubscriptions && (
@@ -184,25 +183,45 @@ const EventDetailsModal = ({ eventId, onClose }) => {
                         <h3>Event Subscriptions</h3>
                         {subscriptions.length > 0 ? (
                             <ul>
-                                {subscriptions.map(sub => (
-                                    <li key={sub.id}>
-                                        <span>{sub.userName}</span>
-                                        {sub.status === 'Pending' && (
-                                            <div>
-                                                <button className="btn-accept" onClick={() => handleAcceptSubscription(sub.id)}>Accept</button>
-                                                <button className="btn-refuse" onClick={() => handleRefuseSubscription(sub.id)}>Refuse</button>
-                                            </div>
-                                        )}
-                                        {sub.status !== 'Pending' &&(
-                                            <span>{sub.status}</span>
-                                        )}
-                                    </li>
-                                ))}
+                                {subscriptions.map(sub => {
+                                    const normalizedStatus = String(sub.status || '').trim().toLowerCase();
+                                    const displayName = sub.userName || sub.playerName || 'Unknown player';
+
+                                    return (
+                                        <li key={sub.id}>
+                                            {normalizedStatus === 'pending' ? (
+                                                <div>
+                                                    <span>{displayName}</span>
+                                                    <button className="btn-accept" onClick={() => handleAcceptSubscription(sub.id)}>Accept</button>
+                                                    <button className="btn-refuse" onClick={() => handleRefuseSubscription(sub.id)}>Refuse</button>
+                                                </div>
+                                            ) : normalizedStatus === 'accepted' ? (
+                                                <div>
+                                                    <span>{displayName} - Subscription Accepted</span>
+                                                    <button className="btn-refuse" onClick={() => handleRefuseSubscription(sub.id)}>Refuse</button>
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    <span>{displayName}</span>
+                                                    <span>{sub.status}</span>
+                                                </>
+                                            )}
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         ) : (
                             <p>No subscriptions for this event yet.</p>
                         )}
                     </div>
+                )}
+
+                {showUpdateModal && (
+                    <UpdateEventModal
+                        event={event}
+                        onClose={() => setShowUpdateModal(false)}
+                        onUpdated={handleEventUpdated}
+                    />
                 )}
             </div>
         </div>

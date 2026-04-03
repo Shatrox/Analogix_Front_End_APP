@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "cinzel";
+    src: url('../assets/fonts/CinzelDecorative-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .dashboard-container {
 	min-height: 100vh;
 	background-image: url('../assets/backgroundHomePage.png');
@@ -22,36 +29,78 @@
 
 .dashboard-hero h1 {
 	margin: 0 0 0.5rem 0;
+	font-family: 'cinzel';
 	color: #1A1A1A;
+	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-hero p {
 	margin: 0;
+	font-family: 'cinzel';
 	color: #F4A261;
+	text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
 }
 
 .dashboard-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-	gap: 1rem;
-	margin: 1rem;
+	gap: 3rem;
+	margin: 3rem;
+	
 }
 
 .dashboard-panel {
 	border: 2px solid #F4A261;
 	border-radius: 10px;
-	padding: 1.2rem;
+	padding: 1.8rem;
 	background-color: #1d355765;
 	box-shadow: 0 2px 4px rgb(0, 0, 0);
+}
+
+
+.mastery-panel {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-blend-mode: multiply;
+}
+
+
+
+.mastery-panel.mastery-meeple-newbie {
+	background-image: url('../assets/Meeple.png');
+	
+}
+
+.mastery-panel.mastery-dice-goblin {
+	background-image: url('../assets/Goblin.png');
+}
+
+.mastery-panel.mastery-rulebook-wizard {
+	background-image: url('../assets/Rulebook.png');
+}
+
+.mastery-panel.mastery-archduke-of-meeples {
+	background-image: url('../assets/Archduke.png');
+}
+
+.mastery-panel.mastery-default {
+	background-image: linear-gradient(135deg, #1d3557 0%, #2a9d8f 100%);
 }
 
 .dashboard-panel h3 {
 	margin-top: 0;
 	color: #1A1A1A;
+	font-family: 'cinzel';
+	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-panel p {
 	color: #F4A261;
+	font-family: 'cinzel';
+	padding-top: 20px;
+	font-size: 0.8rem;
+	text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
 }
 
 .dashboard-panel a {
@@ -61,6 +110,7 @@
 	border-radius: 6px;
 	padding: 0.35rem 0.6rem;
 	display: inline-block;
+	font-family: 'cinzel';
 }
 
 .dashboard-actions {
@@ -83,7 +133,8 @@
 	border: none;
 	cursor: pointer;
 	font-size: inherit;
-	font-family: inherit;
+	font-family: 'cinzel';
+	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-profile-btn {
@@ -94,7 +145,8 @@
 	border: none;
 	cursor: pointer;
 	font-size: inherit;
-	font-family: inherit;
+	font-family: 'cinzel';
+	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-my-events-btn {
@@ -105,7 +157,8 @@
 	border: none;
 	cursor: pointer;
 	font-size: inherit;
-	font-family: inherit;
+	font-family: 'cinzel';
+	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-subscriptions-btn {
@@ -116,7 +169,8 @@
 	border: none;
 	cursor: pointer;
 	font-size: inherit;
-	font-family: inherit;
+	font-family: 'cinzel';
+	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-profile-btn:hover {

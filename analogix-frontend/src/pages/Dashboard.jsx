@@ -24,6 +24,34 @@ const Dashboard = () => {
     const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
+    const getMasteryMeta = (masteryLevel) => {
+        const byNumber = {
+            1: { className: "mastery-meeple-newbie", label: "Meeple Newbie -  \"Just discovered that cardboard and dice can take over your entire evening.\"" },
+            2: { className: "mastery-dice-goblin", label: "Dice Goblin - \"Owns “just a few games”… which somehow fill two shelves.\"" },
+            3: { className: "mastery-rulebook-wizard", label: "Rulebook Wizard - \"Explains complex games in 3 minutes and says “it’s actually simple.”\"" },
+            4: { className: "mastery-archduke-of-meeples", label: "Archduke Of Meeples - \"Hosts legendary game nights and has opinions about optimal starting strategies.\"" },
+        };
+
+        if (masteryLevel === null || masteryLevel === undefined || masteryLevel === "") {
+            return { className: "mastery-default", label: "Not set" };
+        }
+
+        const numericLevel = Number(masteryLevel);
+        if (Number.isFinite(numericLevel) && byNumber[numericLevel]) {
+            return byNumber[numericLevel];
+        }
+
+        const normalized = String(masteryLevel).toLowerCase().replace(/[^a-z0-9]/g, "");
+        const byName = {
+            meeplenewbie: byNumber[1],
+            dicegoblin: byNumber[2],
+            rulebookwizard: byNumber[3],
+            archdukeofmeeples: byNumber[4],
+        };
+
+        return byName[normalized] || { className: "mastery-default", label: String(masteryLevel) };
+    };
+
     const handleOpenEventDetails = (eventId) => {
         setSelectedEventId(eventId);
         setShowEventDetailsModal(true);
@@ -62,6 +90,7 @@ const Dashboard = () => {
             } catch (err) {
                 if (err?.response?.status === 401) {
                     localStorage.removeItem('token');
+                    localStorage.removeItem('userId');
                     navigate('/login');
                     return;
                 }
@@ -93,6 +122,8 @@ const Dashboard = () => {
         );
     }
 
+    const masteryMeta = getMasteryMeta(profile?.masteryLevel);
+
     return (
         <div className="dashboard-container">
             <Navbar page="dashboard"/>
@@ -116,9 +147,9 @@ const Dashboard = () => {
                         <p>{profile?.favoriteGames || 'No favorite games yet.'}</p>
                     </article>
 
-                    <article className="dashboard-panel">
+                    <article className={`dashboard-panel mastery-panel ${masteryMeta.className}`}>
                         <h3>Mastery Level</h3>
-                        <p>{profile?.masteryLevel ?? 'Not set'}</p>
+                        <p>{masteryMeta.label}</p>
                     </article>
 
                     <article className="dashboard-panel">
@@ -152,9 +183,18 @@ const Dashboard = () => {
                     {filteredEvents.map(event => (
                         <div key={event.id} className="event-card">
                             <h3>{event.title}</h3>
-                            <p><strong>Date:</strong> {new Date(event.startDate).toLocaleDateString()}</p>
-                            <p>Party Owner: {event.creatorName}</p>
-                            <p>Location: {event.location}</p>
+                            <p className="name-line">
+                                <span className="name-label"><strong>Date:</strong></span>
+                                <span className="name-value"> {new Date(event.startDate).toLocaleDateString()}</span>
+                            </p>
+                            <p className="name-line">
+                                <span className="name-label"><strong>Party Owner:</strong></span>
+                                <span className="name-value"> {event.creatorName}</span>
+                            </p>
+                            <p className="name-line">
+                                <span className="name-label"><strong>Location:</strong></span>
+                                <span className="name-value"> {event.location}</span>
+                            </p>
                             
                             <button className="btn-details" onClick={() => handleOpenEventDetails(event.id)}>View Details</button>
                         </div>

@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "cinzel";
+    src: url('../assets/fonts/CinzelDecorative-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .my-subscriptions-container {
     min-height: 100vh;
     background-image: url('../assets/backgroundHomePage.png');
@@ -7,14 +14,14 @@
     background-attachment: fixed;
 }
 
-.subscriptions-content,
+
 .subscriptions-panel {
     width: min(100%, 960px);
     margin: 2rem auto;
     padding: 2rem;
     border: 2px solid #F4A261;
     border-radius: 10px;
-    background-color: #1d355765;
+    background-color: #1d3557;
     box-shadow: 0 2px 6px rgb(0, 0, 0);
 }
 
@@ -79,6 +86,7 @@
 
 .subscription-card {
     border: 1px solid #ccc;
+    background-color: #1A1A1A;
     border-radius: 8px;
     padding: 1rem;
     display: flex;
@@ -86,16 +94,46 @@
     justify-content: space-between;
 }
 
+.subscription-card h3 {
+    font-family: 'cinzel';
+    color:#F4A261;
+    text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+}
+
+.subscription-card p {
+    color: #F4A261;
+    font-family: 'cinzel';
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.subscription-card.unsubscribed {
+    background-color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+    opacity: 0.8;
+}
+
 .subscription-actions {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 1rem;
+}
+
+.unsubscribe-note {
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+    color: #7a0000;
+    font-weight: 600;
 }
 
 .btn-details {
     background-color: #007bff;
     color: white;
     border: none;
+    margin: 4px;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
@@ -103,6 +141,16 @@
 
 .btn-unsubscribe {
     background-color: #dc3545;
+    color: white;
+    border: none;
+    margin: 4px;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-subscribe {
+    background-color: #2a9d8f;
     color: white;
     border: none;
     padding: 0.5rem 1rem;

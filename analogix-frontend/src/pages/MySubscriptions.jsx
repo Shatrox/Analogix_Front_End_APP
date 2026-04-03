@@ -1,19 +1,48 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/NavBar";
-import { getSubscribedEvents, unsubscribeFromEvent } from "../services/api";
+import { getSubscribedEvents, subscribeToEvent, unsubscribeFromEvent } from "../services/api";
+import EventDetailsModal from "../components/EventDetailsModal";
 import '../styles/MySubscriptions.css';
 
 
 const MySubscriptions = ({onClose}) => {
     const [subscriptions, setSubscriptions] = useState([]);
+    const [selectedEventId, setSelectedEventId] = useState(null);
+    const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const isUnsubscribedStatus = (status) => {
+        const normalizedStatus = String(status || '').trim().toLowerCase();
+        return normalizedStatus === 'deleted' || normalizedStatus === 'unsubscribed';
+    };
+
+    const normalizeSubscriptions = (items) => {
+        const normalized = (items || []).map((sub) => ({
+            ...sub,
+            isUnsubscribed: Boolean(sub.isUnsubscribed) || isUnsubscribedStatus(sub.status),
+        }));
+
+        const active = normalized.filter((sub) => !sub.isUnsubscribed);
+        const unsubscribed = normalized.filter((sub) => sub.isUnsubscribed);
+        return [...active, ...unsubscribed];
+    };
+
+     const handleOpenEventDetails = (eventId) => {
+        setSelectedEventId(eventId);
+        setShowEventDetailsModal(true);
+    };
+
+    const handleCloseEventDetails = () => {
+        setShowEventDetailsModal(false);
+        setSelectedEventId(null);
+    };
 
     useEffect(() => {
         const fetchSubscriptions = async () => {
             try {
                 const events = await getSubscribedEvents();
-                setSubscriptions(events);
+                setSubscriptions(normalizeSubscriptions(events));
             }catch (err) {
                 setError('Failed to load your subscriptions. Please try again later.');
             } finally {
@@ -24,14 +53,49 @@ const MySubscriptions = ({onClose}) => {
         fetchSubscriptions();
     }, []);
 
-    const handleUnsubscribe = async (eventId, subscriptionId) => {
+    const handleUnsubscribe = async (eventId) => {
         try{
             await unsubscribeFromEvent(eventId);
-            setSubscriptions(subscriptions.filter(sub => sub.id !== subscriptionId));
+
+            setSubscriptions((prev) => {
+                const updated = prev.map((sub) => {
+                    const subEventId = sub.eventId ?? sub.id;
+                    if (String(subEventId) === String(eventId)) {
+                        return { ...sub, isUnsubscribed: true, status: 'Deleted' };
+                    }
+                    return sub;
+                });
+
+                return normalizeSubscriptions(updated);
+            });
+
             alert('You have successfully unsubscribed from the event.');
 
         }catch (err) {
             alert('Failed to unsubscribe from the event. Please try again later.');
+        }
+        
+    };
+
+    const handleSubscribeAgain = async (eventId) => {
+        try {
+            await subscribeToEvent(eventId);
+
+            setSubscriptions((prev) => {
+                const updated = prev.map((sub) => {
+                    const subEventId = sub.eventId ?? sub.id;
+                    if (String(subEventId) === String(eventId)) {
+                        return { ...sub, isUnsubscribed: false, status: 'Pending' };
+                    }
+                    return sub;
+                });
+
+                return normalizeSubscriptions(updated);
+            });
+
+            alert('Subscription request sent again. Waiting for approval.');
+        } catch (err) {
+            alert('Failed to subscribe to the event. Please try again later.');
         }
     };
 
@@ -55,16 +119,33 @@ const MySubscriptions = ({onClose}) => {
                     {subscriptions.length > 0 ? (
                         <div className="subscriptions-list">
                          {subscriptions.map(event => (
-                            <div key={event.id} className="subscription-card">
+                            <div key={event.id} className={`subscription-card ${event.isUnsubscribed ? 'unsubscribed' : ''}`}>
                                 <h3>{event.eventTitle}</h3>
                                 <p>Party Owner: {event.creatorName}</p>
                                 <p>Status: {event.status}</p>
-                                <p>Date of creation: {new Date(event.createdAt).toLocaleDateString()}</p>
+                                <p>Date of subscription: {new Date(event.createdAt).toLocaleDateString()}</p>
                                 <p>Date of response: {new Date(event.responseAt).toLocaleDateString()}</p>
                                 <p>Location: {event.eventLocation}</p>
+                                {event.isUnsubscribed && (
+                                    <p className="unsubscribe-note">You have unsubscribed this event</p>
+                                )}
                                 <div className="subscription-actions">
-                                    <button className="btn-details">View Details</button>
-                                    <button className="btn-unsubscribe" onClick={() => handleUnsubscribe(event.eventId)}>Unsubscribe</button>
+                                    <button className="btn-details" onClick={() => handleOpenEventDetails(event.eventId ?? event.id)}>View Details</button>
+                                    {event.isUnsubscribed ? (
+                                        <button
+                                            className="btn-subscribe"
+                                            onClick={() => handleSubscribeAgain(event.eventId ?? event.id)}
+                                        >
+                                            Subscribe
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="btn-unsubscribe"
+                                            onClick={() => handleUnsubscribe(event.eventId ?? event.id)}
+                                        >
+                                            Unsubscribe
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}    
@@ -74,6 +155,14 @@ const MySubscriptions = ({onClose}) => {
                 )}
             </div>
         )}
+        {showEventDetailsModal && selectedEventId && (
+                <EventDetailsModal
+                    eventId={selectedEventId}
+                    onClose={handleCloseEventDetails}
+                />
+        )}
+
+
     </div>
     )
 

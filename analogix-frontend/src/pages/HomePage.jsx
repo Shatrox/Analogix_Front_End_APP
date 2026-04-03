@@ -88,9 +88,18 @@ const HomePage = () => {
                     {events.map(event => (
                         <div key={event.id} className="event-card">
                             <h3>{event.title}</h3>
-                            <p><strong>Date:</strong> {new Date(event.startDate).toLocaleDateString()}</p>
-                            <p>Party Owner: {event.creatorName}</p>
-                            <p>Location: {event.location}</p>
+                            <p className="name-line">
+                                <span className="name-label"><strong>Date:</strong></span>
+                                <span className="name-value"> {new Date(event.startDate).toLocaleDateString()}</span>
+                            </p>
+                            <p className="name-line">
+                                <span className="name-label"><strong>Party Owner:</strong></span>
+                                <span className="name-value"> {event.creatorName}</span>
+                            </p>
+                            <p className="name-line">
+                                <span className="name-label"><strong>Location:</strong></span>
+                                <span className="name-value"> {event.location}</span>
+                            </p>
                             
                             <button className="btn-details" onClick={() => handleOpenEventDetails(event.id)}>View Details</button>
                         </div>
