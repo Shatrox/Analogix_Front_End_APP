@@ -7,7 +7,7 @@
 
 .dashboard-container {
 	min-height: 100vh;
-	background-image: url('../assets/backgroundHomePage.png');
+	background-image: url('../assets/backgroundHomePage.webp');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -35,10 +35,10 @@
 }
 
 .dashboard-hero p {
-	margin: 0;
-	font-family: 'cinzel';
-	color: #F4A261;
-	text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
+  font-size: 1.2rem;
+  font-family: 'cinzel';
+  color: #1A1A1A;
+  text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-grid {
@@ -90,6 +90,7 @@
 
 .dashboard-panel h3 {
 	margin-top: 0;
+	margin-bottom: 20px;
 	color: #1A1A1A;
 	font-family: 'cinzel';
 	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
@@ -98,7 +99,6 @@
 .dashboard-panel p {
 	color: #F4A261;
 	font-family: 'cinzel';
-	padding-top: 20px;
 	font-size: 0.8rem;
 	text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
 }
@@ -236,3 +236,35 @@
 	padding: 1rem;
 	overflow-y: auto;
 }
+
+.search-bar-container {
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #F4A261;
+    border-radius: 8px;
+    background-color: #1A1A1A;
+    color: #F4A261;
+    font-family: 'cinzel', sans-serif;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #f4a26199;
+}
+
+.search-input:focus {
+    border-color: #E76F51;
+    box-shadow: 0 0 0 2px rgba(244, 162, 97, 0.35);
+}
+
+
+
+

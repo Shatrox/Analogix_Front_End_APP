@@ -105,4 +105,32 @@ export const refuseSubscription = async (subscriptionId) => {
     await api.patch(`/EventSubscription/subscription/${subscriptionId}/refuse`);
 }
 
+// Get all EventFQAs for a specific event
+export const getEventFQAs = async (eventId) => {
+    const response = await api.get(`/EventFaq`, { params: { eventId } });
+    return response.data; // Return list of FQAs for the event
+}
+
+// Ask a question for a specific event
+export const askEventFQA = async (eventId, question) => {
+    const response = await api.post(`/EventFaq/questions`, { question }, { params: { eventId } });
+    return response.data; // Return the created FQA
+}
+
+// Answer a question for a specific event
+export const answerEventFQA = async (eventId, questionId, answer) => {
+    const response = await api.post(`/EventFaq/questions/${questionId}/answer`, { answer }, {params: { eventId, questionId }});
+    return response.data; // Return the created answer
+}
+
+// Delete a question for a specific event
+export const deleteEventFQAQuestion = async (eventId, questionId) => {
+    await api.delete(`/EventFaq/questions/${questionId}/delete/question`, { params: { eventId } });
+}
+
+// Delete an answer for a specific event
+export const deleteEventFQAAnswer = async (eventId, questionId) => {
+    await api.delete(`/EventFaq/questions/${questionId}/delete/answer`, { params: { eventId } });
+}
+
 export default api;

@@ -11,6 +11,7 @@ const HomePage = () => {
     const [error, setError] = useState(null);
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchEvents = async () => {
@@ -41,6 +42,16 @@ const HomePage = () => {
         setShowEventDetailsModal(false);
         setSelectedEventId(null);
     };
+
+    const filteredEvents = events.filter((event) => {
+        if (!searchTerm.trim()) return true;
+        const term = searchTerm.toLowerCase();
+        return (
+            (event.title || "").toLowerCase().includes(term) ||
+            (event.location || "").toLowerCase().includes(term) ||
+            (event.creatorName || "").toLowerCase().includes(term)
+        );
+    });
 
     return(
         
@@ -75,17 +86,28 @@ const HomePage = () => {
                         <p>Here Games Turn Into New Friendships</p>
                     </>
                 )}
+                
             </header>
-
+               
             <main className="event-section-style">
                 <div className="title-style">
                     <h2>Events Available</h2>
                 </div>
+                <div className="search-bar-container">
+                    <input
+                        type="text"
+                        placeholder="Search events by title, location, or party owner..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="search-input"
+                    
+                    />
 
+                </div>
                 <div className="events-display-style">
                          {loading && <p>Loading events...</p>}
                     {error && <p>{error}</p>}
-                    {events.map(event => (
+                    {filteredEvents.map(event => (
                         <div key={event.id} className="event-card">
                             <h3>{event.title}</h3>
                             <p className="name-line">

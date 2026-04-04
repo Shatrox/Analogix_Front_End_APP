@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "alegreya";
+    src: url('../assets/fonts/Alegreya-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .event-details-modal {
     position: fixed;
     top: 0;
@@ -15,21 +22,57 @@
     background: #E76F51;
     padding: 20px;
     border-radius: 8px;
-    max-width: 500px;
+    max-width: 1000px;
     width: 100%;
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
 }
 
+.event-details-content .name-line{
+    display: flex;
+    border: 2px solid #1A1A1A;
+    border-radius: 6px;
+    margin: 2px;
+    padding: 8px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+}
+
+.event-details-content .name-label{
+    color: #f2c078;
+    font-family: 'alegreya', sans-serif;
+    font-weight: 700;
+}
+
+.event-details-content .name-value{
+    color: #1A1A1A;
+    font-family: 'alegreya', sans-serif;
+    font-weight: 600;
+}
+
+
+.event-details-content h2 {
+    font-family: 'cinzel', sans-serif;
+    color:#1A1A1A;
+    text-shadow: -1px -1px 0 #F4A261, 1px -1px 0 #F4A261, -1px 1px 0 #F4A261, 1px 1px 0 #F4A261;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+}
+
 .event-details-modal-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+  padding: 0.8rem 1rem;
+  margin: 10px;
+  background-color: #1D3557;
+  color: #F4A261;
+  border: 2px solid #F4A261;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.event-details-modal-close-btn:hover{
+    background-color: rgba(244, 162, 97, 0.15);
 }
 
 .event-details-modal-actions {
@@ -88,4 +131,57 @@
 .btn-accept:hover,
 .btn-refuse:hover {
     filter: brightness(0.95);
+}
+
+
+.btn-show-faq {
+    margin: 10px;
+    padding: 0.5rem 1.2rem;
+    background-color: #1D3557;
+    color: #F4A261;
+    border: 2px solid #F4A261;
+    border-radius: 6px;
+    font-family: 'cinzel', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-show-faq:hover {
+    background-color: rgba(244, 162, 97, 0.15);
+}
+
+.btn-manage-event, .btn-see-subscriptions{
+    margin: 10px;
+    padding: 0.5rem 1.2rem;
+    background-color: #1D3557;
+    color: #F4A261;
+    border: 2px solid #F4A261;
+    border-radius: 6px;
+    font-family: 'cinzel', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-manage-event:hover, .btn-see-subscriptions:hover{
+    background-color: rgba(244, 162, 97, 0.15);
+}
+
+@media (max-width: 640px) {
+    .event-details-content {
+        max-width: 95vw;
+        padding: 14px;
+        margin: 8px;
+    }
+
+    .event-details-modal-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .btn-show-faq,
+    .btn-manage-event,
+    .btn-see-subscriptions {
+        width: 100%;
+    }
 }

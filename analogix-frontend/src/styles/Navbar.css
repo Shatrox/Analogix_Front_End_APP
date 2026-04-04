@@ -13,7 +13,7 @@
     background-color: transparent;
     padding: 1rem 2rem;
     
-    background-image: url('../assets/backgroundHomePage.png');
+    background-image: url('../assets/backgroundHomePage.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -39,27 +39,56 @@
 }
 
 .navbar-links-style a {
-    color: #1A1A1A;
-    font-family: 'cinzel';
-    padding: 5px;
+    margin: 10px;
+    padding: 0.5rem 1.2rem;
+    background-color: #1D3557;
+    color: #F4A261;
     border: 2px solid #F4A261;
-    border-radius: 12px 8px 14px 10px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
+    border-radius: 6px;
+    font-family: 'cinzel', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 .navbar-links-style a:hover {
-    color: #FFD60A;
+    background-color: rgba(244, 162, 97, 0.15);
 }
 
 .logout-button {
+    margin: 10px;
+    padding: 0.5rem 1.2rem;
+    background-color: #1D3557;
     color: #F4A261;
-    font-family: 'cinzel';
-    padding: 5px;
     border: 2px solid #F4A261;
-    border-radius: 12px 8px 14px 10px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
+    border-radius: 6px;
+    font-family: 'cinzel', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: rgba(244, 162, 97, 0.15);
+}
+
+@media (max-width: 640px) {
+    .navbar {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+    }
+
+    .navbar-links-style {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .navbar-links-style a {
+        font-size: 0.8rem;
+        padding: 4px 6px;
+    }
+
+    .navbar-title a {
+        font-size: 1.2rem;
+    }
 }

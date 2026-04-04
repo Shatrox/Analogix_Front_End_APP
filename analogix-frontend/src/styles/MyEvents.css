@@ -1,6 +1,12 @@
+@font-face {
+    font-family: "alegreya";
+    src: url('../assets/fonts/Alegreya-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 .my-events-container {
     min-height: 100vh;
-	background-image: url('../assets/backgroundHomePage.png');
+	background-image: url('../assets/backgroundHomePage.webp');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -100,10 +106,14 @@
     justify-content: space-between;
 }
 
+.past-event {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
 .event-card p{
     color: #F4A261;
-   
-    font-family: 'cinzel';
+    font-family: 'alegreya', sans-serif;
     margin: 0;
     font-size: 0.9rem;
 }
@@ -122,11 +132,13 @@
 .event-card .name-label {
     color: #f2c078;
     font-weight: 700;
+    font-family: 'alegreya', sans-serif;
 }
 
 .event-card .name-value {
     color: #ffffff;
     font-weight: 600;
+    font-family: 'alegreya', sans-serif;
 }
 
 .event-card h3 {
@@ -140,4 +152,26 @@
 .my-events-message {
 	color: #F4A261;
 	font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+    .my-events-content {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .my-events-panel h1{
+        font-size: 1.5rem;
+    }
+    .my-events-panel h2{
+        font-size: 1rem;
+    }
+
+    .events-list {
+        grid-template-columns: 1fr;
+    }
+
+    .my-events-header {
+        flex-direction: column;
+    }
 }

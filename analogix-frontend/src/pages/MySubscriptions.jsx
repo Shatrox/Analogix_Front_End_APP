@@ -121,11 +121,26 @@ const MySubscriptions = ({onClose}) => {
                          {subscriptions.map(event => (
                             <div key={event.id} className={`subscription-card ${event.isUnsubscribed ? 'unsubscribed' : ''}`}>
                                 <h3>{event.eventTitle}</h3>
-                                <p>Party Owner: {event.creatorName}</p>
-                                <p>Status: {event.status}</p>
-                                <p>Date of subscription: {new Date(event.createdAt).toLocaleDateString()}</p>
-                                <p>Date of response: {new Date(event.responseAt).toLocaleDateString()}</p>
-                                <p>Location: {event.eventLocation}</p>
+                                <p className="name-line">
+                                    <span className="name-label">Party Owner:</span>
+                                    <span className="name-value">{event.creatorName}</span>
+                                </p>
+                                <p className="name-line">
+                                    <span className="name-label">Status:</span>
+                                    <span className="name-value">{event.status}</span>
+                                </p>
+                                <p className="name-line">
+                                    <span className="name-label">Date of subscription:</span>
+                                    <span className="name-value">{new Date(event.createdAt).toLocaleDateString()}</span>
+                                </p>
+                                <p className="name-line">
+                                    <span className="name-label">Date of response:</span>
+                                    <span className="name-value">{new Date(event.responseAt).toLocaleDateString()}</span>
+                                </p>
+                                <p className="name-line">
+                                    <span className="name-label">Location:</span>
+                                    <span className="name-value">{event.eventLocation}</span>
+                                </p>
                                 {event.isUnsubscribed && (
                                     <p className="unsubscribe-note">You have unsubscribed this event</p>
                                 )}

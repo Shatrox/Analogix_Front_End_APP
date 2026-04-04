@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { getEventDetails, subscribeToEvent, getEventSubscriptions, acceptSubscription, refuseSubscription, getSubscribedEvents } from "../services/api"; 
 import '../styles/EventDetailsModal.css';
 import UpdateEventModal from "./UpdateEventModal";
+import EventFaqModal from "./EventFaqModal";
+
 
 const EventDetailsModal = ({ eventId, onClose }) => {
     const [event, setEvent] = useState(null);
@@ -11,9 +13,12 @@ const EventDetailsModal = ({ eventId, onClose }) => {
     const [showSubscriptions, setShowSubscriptions] = useState(false);
     const [subscriptions, setSubscriptions] = useState([]);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [showFaq, setShowFaq] = useState(false);
 
     const isAuthenticated = !!localStorage.getItem('token');
     const currentUserId = localStorage.getItem('userId');
+
+   
 
     useEffect(() => {
         const fetchEventDetails = async () => {
@@ -141,18 +146,46 @@ const EventDetailsModal = ({ eventId, onClose }) => {
         : false;
     const isCreator = isAuthenticated && (sameNumericId || sameStringId);
 
+    const isAcceptedSubscriber = subscriptionsStatus && String(subscriptionsStatus).trim().toLowerCase() === 'accepted';
+    const canSeeFaq = isCreator || isAcceptedSubscriber;
+
     return (
         <div className="event-details-modal" onClick={onClose}>
             <div className="event-details-content" onClick={(e) => e.stopPropagation()}>
                 <button className="event-details-modal-close-btn" onClick={onClose}>Close</button>
                 <h2>{event.title}</h2>
-                <p><strong>Description:</strong> {event.description}</p>
-                <p><strong>Start Date:</strong> {new Date(event.startDate).toLocaleString()}</p>
-                <p><strong>End Date:</strong> {new Date(event.endDate).toLocaleString()}</p>
-                <p><strong>Location:</strong> {event.location}</p>
-                <p><strong>Participants:</strong> {participants.length} / {event.maxParticipants}</p>
-                <p><strong>Creator:</strong> {event.creator || event.creatorName || 'Unknown'}</p>
-                <p><strong>Tags:</strong> {tags.length > 0 ? tags.join(', ') : 'No tags'}</p>
+                <p className="name-line">
+                    <span className="name-label">Description:</span>
+                    <span className="name-value">{event.description}</span>
+                </p>
+                <p className="name-line">
+                    <span className="name-label">Start Date:</span>
+                    <span className="name-value">{new Date(event.startDate).toLocaleString()}</span>
+                </p>
+                <p className="name-line">
+                    <span className="name-label">End Date:</span>
+                    <span className="name-value">{new Date(event.endDate).toLocaleString()}</span>
+                </p>
+                <p className="name-line">
+                    <span className="name-label">Location:</span>
+                    <span className="name-value">{event.location}</span>
+                </p>
+                <p className="name-line">
+                    <span className="name-label">Max Participants:</span>
+                    <span className="name-value">{participants.length} / {event.maxParticipants}</span>
+                </p>
+                <p className="name-line">
+                    <span className="name-label">Participants:</span>
+                    <span className="name-value">{event.participants?.length > 0 ? event.participants.join(', ') : 'No participants yet.'}</span>
+                </p>
+                <p className="name-line">
+                    <span className="name-label">Creator:</span>
+                    <span className="name-value">{event.creator || event.creatorName || 'Unknown'}</span>
+                </p>
+                <p className="name-line">
+                    <span className="name-label">Tags:</span>
+                    <span className="name-value">{tags.length > 0 ? tags.join(', ') : 'No tags'}</span>
+                </p>
 
                 <div className="event-details-modal-actions">
                     
@@ -160,8 +193,10 @@ const EventDetailsModal = ({ eventId, onClose }) => {
                     <>
                     {isCreator ? (
                     <>
-                        <button onClick={() => setShowUpdateModal(true)}>Manage Event</button>
-                        <button onClick={handleShowSubscriptions}>See Subscriptions</button>
+                        <button className="btn-manage-event" onClick={() => setShowUpdateModal(true)}>Manage Event</button>
+                        <button className="btn-see-subscriptions" onClick={() => showSubscriptions ? setShowSubscriptions(false) : handleShowSubscriptions()}>
+                            {showSubscriptions ? 'Hide Subscriptions' : 'See Subscriptions'}
+                        </button>
                     </>
                     ) : (
                     <>
@@ -223,6 +258,22 @@ const EventDetailsModal = ({ eventId, onClose }) => {
                         onUpdated={handleEventUpdated}
                     />
                 )}
+
+                {canSeeFaq && (
+                    <>
+                        <button className="btn-show-faq" onClick={() => setShowFaq((prev) => !prev)}>
+                            {showFaq ? "Hide Q&A" : "Show Q&A"}
+                        </button>
+
+                        {showFaq && (
+                            <EventFaqModal 
+                                eventId={eventId} 
+                                isCreator={isCreator}
+                                currentUserId={currentUserId} 
+                            />
+                        )}
+                    </>
+                )}      
             </div>
         </div>
     );

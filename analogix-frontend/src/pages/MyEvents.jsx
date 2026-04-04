@@ -16,7 +16,14 @@ const MyEvents = ({onClose}) => {
         const fetchEvents = async () => {
             try {
                 const myEvents = await getMyEvents();
-                setEvents(myEvents);
+                const now = new Date();
+                const sortedEvents = [...myEvents].sort((a,b) => {
+                    const aPast = new Date(a.endDate) < now;
+                    const bPast = new Date(b.endDate) < now;
+                    if (aPast === bPast) return 0;
+                    return aPast ? 1 : -1;
+                })
+                setEvents(sortedEvents);
             } catch (err) {
                 setError('Failed to load your events. Please try again later.');
             } finally {
@@ -58,7 +65,7 @@ const MyEvents = ({onClose}) => {
                     {events.length > 0 ? (
                         <div className="events-list">
                             {events.map(event => (
-                                <div key={event.id} className="event-card">
+                                <div key={event.id} className={`event-card${new Date(event.endDate) < new Date() ? ' past-event' : ''}`}>
                                     <h3>{event.title}</h3>
                                    
                                     <p className="name-line">

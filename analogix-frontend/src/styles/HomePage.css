@@ -18,7 +18,7 @@
     text-align: center;
     min-height: 100vh;
     
-    background-image: url('../assets/backgroundHomePage.png');
+    background-image: url('../assets/backgroundHomePage.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -46,8 +46,8 @@
 .home-header p {
     font-size: 1.2rem;
     font-family: 'cinzel';
-    color: #F4A261;
-    text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
+    color: #1A1A1A;
+    text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
     max-width: 600px;
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -138,4 +138,56 @@
   50% {
     transform: translateY(8px) rotate(var(--rotation, 0deg));
   }
+}
+
+@media (max-width: 640px) {
+    .home-header {
+        margin: 1rem;
+        padding: 1.5rem 0.75rem;
+    }
+
+    .home-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .title-style {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .events-section-style {
+        padding: 1rem;
+    }
+
+    .events-display-style {
+        grid-template-columns: 1fr;
+    }
+}
+
+.search-bar-container {
+    margin: 1.5rem auto;
+    display: flex;
+    justify-content: center;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 500px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #F4A261;
+    border-radius: 8px;
+    background-color: #1A1A1A;
+    color: #F4A261;
+    font-family: 'cinzel', sans-serif;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #f4a26199;
+}
+
+.search-input:focus {
+    border-color: #E76F51;
+    box-shadow: 0 0 0 2px rgba(244, 162, 97, 0.35);
 }
