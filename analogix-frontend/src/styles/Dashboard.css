@@ -90,17 +90,22 @@
 
 .dashboard-panel h3 {
 	margin-top: 0;
+	border: 2px solid #F4A261;
 	margin-bottom: 20px;
-	color: #1A1A1A;
+	padding: 6px;
+	border-radius: 10px;
+	background-color: #1A1A1A;
+	color: #F4A261;
+	text-align: center;
 	font-family: 'cinzel';
-	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
+	
 }
 
 .dashboard-panel p {
-	color: #F4A261;
+	color: #1A1A1A;
 	font-family: 'cinzel';
 	font-size: 0.8rem;
-	text-shadow: -1px -1px 0 #1A1A1A, 1px -1px 0 #1A1A1A, -1px 1px 0 #1A1A1A, 1px 1px 0 #1A1A1A;
+	text-shadow: -1px -1px 0 #D89441, 1px -1px 0 #D89441, -1px 1px 0 #D89441, 1px 1px 0 #D89441;
 }
 
 .dashboard-panel a {
@@ -265,6 +270,11 @@
     box-shadow: 0 0 0 2px rgba(244, 162, 97, 0.35);
 }
 
+.user-avg-rating {
+    color: #F4A261;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
 
 
 

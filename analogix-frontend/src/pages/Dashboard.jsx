@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getPlayerProfileDetails, getAllEventsNotOwned, getSubscribedEvents } from "../services/api";
+import { getPlayerProfileDetails, getAllEventsNotOwned, getSubscribedEvents, getUserRatingSummary } from "../services/api";
 import Navbar from "../components/NavBar";
 import '../styles/Dashboard.css';
 import CreateEvent from './CreateEvent';
@@ -23,13 +23,14 @@ const Dashboard = () => {
     const [selectedEventId, setSelectedEventId] = useState(null);
     const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [ratingSummary, setRatingSummary] = useState(null);
 
     const getMasteryMeta = (masteryLevel) => {
         const byNumber = {
-            1: { className: "mastery-meeple-newbie", label: "Meeple Newbie -  \"Just discovered that cardboard and dice can take over your entire evening.\"" },
-            2: { className: "mastery-dice-goblin", label: "Dice Goblin - \"Owns “just a few games”… which somehow fill two shelves.\"" },
-            3: { className: "mastery-rulebook-wizard", label: "Rulebook Wizard - \"Explains complex games in 3 minutes and says “it’s actually simple.”\"" },
-            4: { className: "mastery-archduke-of-meeples", label: "Archduke Of Meeples - \"Hosts legendary game nights and has opinions about optimal starting strategies.\"" },
+            1: { className: "mastery-meeple-newbie", label: "Level 1 -Meeple Newbie -  \"Just discovered that cardboard and dice can take over your entire evening.\"" },
+            2: { className: "mastery-dice-goblin", label: "Level 2 - Dice Goblin - \"Owns “just a few games”… which somehow fill two shelves.\"" },
+            3: { className: "mastery-rulebook-wizard", label: "Level 3 - Rulebook Wizard - \"Explains complex games in 3 minutes and says “it’s actually simple.”\"" },
+            4: { className: "mastery-archduke-of-meeples", label: "Level 4 - Archduke Of Meeples - \"Hosts legendary game nights and has opinions about optimal starting strategies.\"" },
         };
 
         if (masteryLevel === null || masteryLevel === undefined || masteryLevel === "") {
@@ -85,6 +86,17 @@ const Dashboard = () => {
                     getSubscribedEvents(),
                 ]);
                 setProfile(details);
+                console.log('Profile object:', details);
+                const userId = localStorage.getItem('userId');
+                if (userId) {
+                    try {
+                        const ratingSummary = await getUserRatingSummary(userId);
+                        setRatingSummary(ratingSummary);
+                    } catch{
+
+                    }
+                }
+
                 setEvents(allEventsNotOwned);
                 setSubscribedEvents(subscribedEvents);
             } catch (err) {
@@ -137,9 +149,13 @@ const Dashboard = () => {
 
                 <section className="dashboard-grid">
                     <article className="dashboard-panel">
-                        <h3>Profile Summary</h3>
+                        <h3>
+                            {profile?.userName || profile?.name || 'Profile Summary'}
+                            {ratingSummary && ratingSummary.totalRatings > 0 && (
+                                <span className="user-avg-rating"> — {ratingSummary.averageScore} ★</span>
+                            )}
+                        </h3>
                         <p>{profile?.biography || 'No biography added yet.'}</p>
-                        <button className="dashboard-profile-btn" onClick={() => setShowProfilePage(true)}>Open Profile</button>
                     </article>
 
                     <article className="dashboard-panel">

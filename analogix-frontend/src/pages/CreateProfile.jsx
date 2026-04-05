@@ -58,12 +58,18 @@ const CreateProfile = () => {
                     value={favoriteGames}
                     onChange={(e) => setFavoriteGames(e.target.value)}
                 />
-                <input
+                <select
                     type="number"
                     placeholder="Mastery Level"
                     value={masteryLevel}
                     onChange={(e) => setMasteryLevel(e.target.value)}
-                />
+                >
+                    <option value="">Select mastery level</option>
+                    <option value="1">Level 1 - Meeple Newbie</option>
+                    <option value="2">Level 2 - Dice Goblin</option>
+                    <option value="3">Level 3 - Rulebook Wizard</option>
+                    <option value="4">Level 4 - Archduke Of Meeples</option>
+                </select>
                 <input
                     type="text"
                     placeholder="Favorite Game Tags (comma separated)"

@@ -3,6 +3,7 @@ import { getEventDetails, subscribeToEvent, getEventSubscriptions, acceptSubscri
 import '../styles/EventDetailsModal.css';
 import UpdateEventModal from "./UpdateEventModal";
 import EventFaqModal from "./EventFaqModal";
+import RatePlayerModal from "./RatePlayerModal";
 
 
 const EventDetailsModal = ({ eventId, onClose }) => {
@@ -18,6 +19,7 @@ const EventDetailsModal = ({ eventId, onClose }) => {
     const isAuthenticated = !!localStorage.getItem('token');
     const currentUserId = localStorage.getItem('userId');
 
+    const [showRatingModal, setShowRatingModal] = useState(false);
    
 
     useEffect(() => {
@@ -149,6 +151,9 @@ const EventDetailsModal = ({ eventId, onClose }) => {
     const isAcceptedSubscriber = subscriptionsStatus && String(subscriptionsStatus).trim().toLowerCase() === 'accepted';
     const canSeeFaq = isCreator || isAcceptedSubscriber;
 
+    const isEventFinished = event.endDate && new Date(event.endDate) < new Date();
+    const canRate = isAuthenticated && isEventFinished && (isAcceptedSubscriber || isCreator);
+
     return (
         <div className="event-details-modal" onClick={onClose}>
             <div className="event-details-content" onClick={(e) => e.stopPropagation()}>
@@ -189,7 +194,7 @@ const EventDetailsModal = ({ eventId, onClose }) => {
 
                 <div className="event-details-modal-actions">
                     
-                    {isAuthenticated && (
+                    {isAuthenticated ? (
                     <>
                     {isCreator ? (
                     <>
@@ -210,7 +215,9 @@ const EventDetailsModal = ({ eventId, onClose }) => {
             </>
         )}
     </>
-)}
+) : (
+                        <p className="login-to-subscribe-msg">You need to be logged in to subscribe to this event.</p>
+                    )}
                 </div>
 
                 {showSubscriptions && (
@@ -273,7 +280,27 @@ const EventDetailsModal = ({ eventId, onClose }) => {
                             />
                         )}
                     </>
-                )}      
+                )}
+
+                {canRate && (
+                    <>
+                        <button className="btn-show-faq" onClick={() => setShowRatingModal((prev) => !prev)}>{showRatingModal ? "Hide Ratings" : "Rate Players"}</button>
+                        {showRatingModal && (
+                            <RatePlayerModal
+                                eventId={eventId}
+                                creatorId = {event.creatorId ?? event.creator?.id}
+                                creatorName = {event.creator || event.creatorName || 'Unknown'}
+                                currentUserId = {currentUserId}
+                                onClose={() => setShowRatingModal(false)}
+                            />
+                        )}
+                    
+                    </>
+                )}
+
+
+
+
             </div>
         </div>
     );

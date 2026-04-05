@@ -166,6 +166,15 @@
     background-color: rgba(244, 162, 97, 0.15);
 }
 
+.login-to-subscribe-msg {
+    color: #1D3557;
+    font-family: 'alegreya', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-align: center;
+    padding: 0.5rem;
+}
+
 @media (max-width: 640px) {
     .event-details-content {
         max-width: 95vw;

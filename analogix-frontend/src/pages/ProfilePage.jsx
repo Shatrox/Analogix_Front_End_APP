@@ -8,10 +8,10 @@ const ProfilePage = ({ onClose }) => {
     const navigate = useNavigate();
 
     const masteryLevelOptions = [
-        { value: '1', label: 'Meeple Newbie' },
-        { value: '2', label: 'Dice Goblin' },
-        { value: '3', label: 'Rulebook Wizard' },
-        { value: '4', label: 'Archduke Of Meeples' },
+        { value: '1', label: 'Level 1 - Meeple Newbie' },
+        { value: '2', label: 'Level 2 - Dice Goblin' },
+        { value: '3', label: 'Level 3 - Rulebook Wizard' },
+        { value: '4', label: 'Level 4 - Archduke Of Meeples' },
     ];
 
     const masteryAliases = {

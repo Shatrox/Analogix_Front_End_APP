@@ -133,4 +133,22 @@ export const deleteEventFQAAnswer = async (eventId, questionId) => {
     await api.delete(`/EventFaq/questions/${questionId}/delete/answer`, { params: { eventId } });
 }
 
+// Rate a player
+export const ratePlayer = async(ratingData) => {
+    const response = await api.post('/Rating/rate', ratingData);
+    return response.data; // Return the created rating
+}
+
+// Get my ratings for a specific event
+export const getMyRatingsForEvent = async (eventId) => {
+    const response = await api.get(`/Rating/events/${eventId}/my-ratings`);
+    return response.data;
+}
+
+// Get average rating for a specific player
+export const getUserRatingSummary = async (userId) => {
+    const response = await api.get(`/Rating/players/${userId}/rating-summary`);
+    return response.data; // Return the rating summary
+}
+
 export default api;
