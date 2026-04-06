@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Navbar from "../components/NavBar";
-import { getMyEvents } from "../services/api";
+import { getMyEvents, deleteEvent } from "../services/api";
 import '../styles/MyEvents.css';
 import EventDetailsModal from "../components/EventDetailsModal";
 
@@ -42,6 +42,18 @@ const MyEvents = ({onClose}) => {
     const handleCloseEventDetails = () => {
         setShowEventDetailsModal(false);
         setSelectedEventId(null);
+    };
+
+    const handleDeleteEvent = async (eventId) => {
+        if (!window.confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+            return;
+        }
+        try {
+            await deleteEvent(eventId);
+            setEvents(prev => prev.filter(e => e.id !== eventId));
+        } catch (err) {
+            alert('Failed to delete the event. Please try again later.');
+        }
     };
 
     const content = (
@@ -98,6 +110,13 @@ const MyEvents = ({onClose}) => {
                                         onClick={() => handleOpenEventDetails(event.id)}
                                     >
                                         View Details
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn-delete-event"
+                                        onClick={() => handleDeleteEvent(event.id)}
+                                    >
+                                        Delete Event
                                     </button>
                                 </div>
                             ))}

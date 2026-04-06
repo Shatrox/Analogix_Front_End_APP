@@ -88,6 +88,10 @@ export const getEventDetails = async (eventId) => {
     return response.data; // Return event details
 }
 
+export const deleteEvent = async (eventId) => {
+    await api.delete(`/Event/events/delete/${eventId}`);
+}
+
 export const subscribeToEvent = async (eventId) => {
     await api.post(`/EventSubscription/event/${eventId}/subscribe`);
 }

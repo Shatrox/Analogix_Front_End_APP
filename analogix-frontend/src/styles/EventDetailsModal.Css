@@ -108,8 +108,19 @@
 
 .subscriptions-list li span {
     color: #1A1A1A;
+    font-family: 'alegreya', sans-serif;
+    font-weight: 600;
 }
 
+.subscriptions-list h3 {
+    font-family: 'cinzel', sans-serif;
+    color:#1A1A1A;
+    text-shadow: -1px -1px 0 #F4A261, 1px -1px 0 #F4A261, -1px 1px 0 #F4A261, 1px 1px 0 #F4A261;
+    margin: 0 0 0.5rem 0;
+    font-size: 1.0rem;
+    text-align: center;
+    justify-content: center;
+}
 .btn-accept,
 .btn-refuse {
     border: none;
